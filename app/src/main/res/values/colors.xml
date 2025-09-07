@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0d6efd</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorPrimaryContainer">#cfe2ff</color>
+    <color name="colorOnPrimaryContainer">#052c65</color>
+
+    <color name="colorSecondary">#6c757d</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorSecondaryContainer">#e2e3e5</color>
+    <color name="colorOnSecondaryContainer">#2b2f32</color>
+
+    <color name="colorTertiary">#20c997</color>
+    <color name="colorOnTertiary">#FFFFFF</color>
+    <color name="colorTertiaryContainer">#ccebe4</color>
+    <color name="colorOnTertiaryContainer">#00382b</color>
+
+    <color name="colorError">#dc3545</color>
+    <color name="colorOnError">#FFFFFF</color>
+    <color name="colorErrorContainer">#f8d7da</color>
+    <color name="colorOnErrorContainer">#58151c</color>
+
+    <color name="android_colorBackground">#FFFFFF</color>
+    <color name="colorOnBackground">#212529</color>
+
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#212529</color>
+    <color name="colorSurfaceVariant">#e9ecef</color>
+    <color name="colorOnSurfaceVariant">#343a40</color>
+
+    <color name="colorOutline">#ced4da</color>
+    <color name="colorOutlineVariant">#dee2e6</color>
+    <color name="colorScrim">#99000000</color>
+
+    <color name="colorInverseSurface">#212529</color>
+    <color name="colorInverseOnSurface">#f8f9fa</color>
+    <color name="colorInversePrimary">#0d6efd</color>
+
+    <color name="splash_background_color">#FFFFFF</color>
+
+</resources>
