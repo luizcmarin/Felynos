@@ -40,8 +40,9 @@ object AppModule {
         return Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "catfeina_database"
+            "catfeina.db"
         )
+            .createFromAsset("databases/catfeina.db")
             // .fallbackToDestructiveMigration() // Considere durante o desenvolvimento inicial
             .build()
     }

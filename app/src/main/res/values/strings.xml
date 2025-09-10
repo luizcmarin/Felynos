@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Metadados da Aplicação --><string name="app_name">CatFeína</string>
+    <!-- Metadados da Aplicação --><string name="app_name">Catfeína</string>
     <string name="app_versao">Versão %s</string>
     <string name="app_desenvolvido_por">Desenvolvido por Marin</string>
 
@@ -86,6 +86,29 @@
     <string name="mensagem_poesia_favoritada">Agora essa poesia é sua favorita</string>
     <string name="mensagem_poesia_desfavoritada">Você desmarcou essa poesia como favorita</string>
     <string name="mensagem_poesia_marcada_lida">Parabéns! Você terminou de ler a poesia.</string>
-    <string name="mensagem_poesia_desmarcada_lida">Oba! Você vai ler de novo mais tarde...</string>
+    <string name="mensagem_poesia_desmarcada_lida">Oba! Você vai ler de novo mais tarde…</string>
+
+    <string name="poesia_nao_encontrada">Poesia não encontrada.</string>
+    <string name="erro_ao_carregar_detalhes">Erro ao carregar detalhes da poesia.</string>
+    <string name="poesia_marcada_favorita">Poesia marcada como favorita.</string>
+    <string name="poesia_desmarcada_favorita">Poesia desmarcada como favorita.</string>
+    <string name="erro_atualizar_favorito">Erro ao atualizar favorito.</string>
+    <string name="poesia_marcada_lida">Poesia marcada como lida.</string>
+    <string name="poesia_desmarcada_lida">Poesia desmarcada como lida.</string>
+    <string name="erro_atualizar_leitura">Erro ao atualizar status de leitura.</string>
+    <string name="detalhes_da_poesia">Detalhes da Poesia</string>
+    <string name="informacoes_adicionais">Informações Adicionais</string>
+    <string name="audio">Áudio</string>
+    <string name="video">Vídeo</string>
+    <string name="notas">Notas</string>
+    <string name="link_1">Link 1</string>
+    <string name="link_2">Link 2</string>
+
+    <string name="mascote_nome">Mascote Catshito</string>
+    <string name="ops_algo_deu_errado">Ops! Algo deu errado.</string>
+    <string name="erro_abrir_link_generico">Não foi possível abrir o link.</string>
+    <string name="tamanho_da_fonte_conteudo">Tamanho do texto</string>
+    <string name="diminuir_fonte">Diminuir o texto</string>
+    <string name="aumentar_fonte">Aumentar o texto</string>
 
 </resources>

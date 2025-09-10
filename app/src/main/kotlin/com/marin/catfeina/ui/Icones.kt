@@ -6,6 +6,7 @@ package com.marin.catfeina.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Check
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Pets
@@ -34,6 +36,8 @@ object Icones {
     val Poesia = Icons.Outlined.Pets
     val Inicio = Icons.Default.Home
     val Lixeira = Icons.Default.Delete
+    val Mais = Icons.Default.Add
+    val Menos = Icons.Default.Remove
     val Menu = Icons.Default.Menu
     val NaoVer = Icons.Filled.VisibilityOff
     val Privacidade = Icons.Default.Policy

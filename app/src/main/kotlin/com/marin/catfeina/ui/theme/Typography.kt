@@ -10,124 +10,138 @@ package com.marin.catfeina.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontFamily // Adicionado para o caso de você usar fontes personalizadas
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.LineHeightStyle.Alignment
+import androidx.compose.ui.text.style.LineHeightStyle.Trim
 import androidx.compose.ui.unit.sp
 
-// Você pode definir famílias de fontes customizadas aqui se tiver os arquivos .ttf ou .otf
-// em res/font. Por exemplo:
-// val Roboto = FontFamily(
-//    Font(R.font.roboto_regular, FontWeight.Normal),
-//    Font(R.font.roboto_medium, FontWeight.Medium),
-//    Font(R.font.roboto_bold, FontWeight.Bold)
-// )
+// TODO: Se você tiver fontes personalizadas para o Catfeina (ex: em res/font),
+//       defina-as aqui como FontFamily e aplique-as aos TextStyles abaixo.
+// Exemplo:
+// val minhaFonteCatfeinaRegular = FontFamily(Font(R.font.minha_fonte_catfeina_regular))
+// val minhaFonteCatfeinaBold = FontFamily(Font(R.font.minha_fonte_catfeina_bold))
 
-// Definições de Tipografia Padrão do Material 3.
-// Você pode personalizá-las conforme necessário.
-val Typography = Typography(
+/**
+ * Define a escala tipográfica para o tema Catfeina, baseada nas diretrizes do Material 3.
+ */
+val CatfeinaTypography = Typography(
     displayLarge = TextStyle(
-        fontFamily = FontFamily.Default, // Substitua por sua fonte customizada se tiver
+        // fontFamily = suaFonteDisplayCatfeina, // Exemplo se você tiver uma fonte específica
         fontWeight = FontWeight.Normal,
         fontSize = 57.sp,
         lineHeight = 64.sp,
-        letterSpacing = (-0.25).sp
+        letterSpacing = (-0.25).sp,
     ),
     displayMedium = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 45.sp,
         lineHeight = 52.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
     ),
     displaySmall = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 36.sp,
         lineHeight = 44.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
     ),
     headlineLarge = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 32.sp,
         lineHeight = 40.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
     ),
     headlineMedium = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 28.sp,
         lineHeight = 36.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
     ),
     headlineSmall = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 24.sp,
         lineHeight = 32.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = Alignment.Bottom,
+            trim = Trim.None,
+        ),
     ),
     titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal, // Pode ser FontWeight.Medium ou Bold também
+        // fontFamily = suaFonteTituloCatfeinaBold, // Exemplo
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = Alignment.Bottom,
+            trim = Trim.LastLineBottom,
+        ),
     ),
     titleMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.15.sp
+        letterSpacing = 0.1.sp,
     ),
     titleSmall = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
+        letterSpacing = 0.1.sp,
     ),
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        // fontFamily = suaFonteCorpoCatfeinaRegular, // Exemplo
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.5.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = Alignment.Center,
+            trim = Trim.None,
+        ),
     ),
     bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.25.sp
+        letterSpacing = 0.25.sp,
     ),
     bodySmall = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.4.sp
+        letterSpacing = 0.4.sp,
     ),
     labelLarge = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
+        letterSpacing = 0.1.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = Alignment.Center,
+            trim = Trim.LastLineBottom,
+        ),
     ),
     labelMedium = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.5.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = Alignment.Center,
+            trim = Trim.LastLineBottom,
+        ),
     ),
     labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
+        fontSize = 10.sp,
+        lineHeight = 14.sp,
+        letterSpacing = 0.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = Alignment.Center,
+            trim = Trim.LastLineBottom,
+        ),
+    ),
 )

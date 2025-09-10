@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 // Estado da UI para a tela de LISTA de poesias
@@ -65,12 +66,12 @@ class PoesiaViewModel @Inject constructor(
                 .onStart { _uiState.update { it.copy(isLoading = true, globalErrorResId = null) } }
                 .catch { e ->
                     // Utiliza ExcecaoApp para mensagens de erro mais específicas se disponíveis
-                    val errorResId = if (e is ExcecaoApp) e.stringResId ?: R.string.erro_carregar_registros
+                    val errorResId = if (e is ExcecaoApp) e.stringResId
                     else R.string.erro_carregar_registros
                     _uiState.update { it.copy(isLoading = false, globalErrorResId = errorResId) }
                     // Log apenas se não for uma ExcecaoApp conhecida (que já pode ter sido logada na origem)
                     if (e !is ExcecaoApp) {
-                        Log.e("PoesiaVM", "Erro desconhecido ao carregar poesias: ${e.message}", e)
+                        Timber.e(e, "Erro desconhecido ao carregar poesias: ${e.message}")
                     } else {
                         // Opcional: Logar ExcecaoApp também, se desejar rastrear quando elas ocorrem aqui.
                         // Log.w("PoesiaVM", "Erro ExcecaoApp ao carregar poesias: ${e.message}", e.cause)
@@ -102,10 +103,10 @@ class PoesiaViewModel @Inject constructor(
                 // A lista será atualizada automaticamente se obterTodasPoesiasAction for um Flow que reage a mudanças no DB
             } catch (e: ExcecaoApp) {
                 _eventFlow.emit(UiEvent.ShowSnackbar(messageResId = e.stringResId ?: R.string.erro_excluir_poesia, args = e.args))
-                e.cause?.let { Log.w("PoesiaVM", "Erro (ExcecaoApp) ao excluir poesia: ${e.message}", it) }
+                e.cause?.let { Timber.w(e, "Causa raiz da ExcecaoApp durante exclusão: ${e.message}") }
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ShowSnackbar(R.string.erro_excluir_poesia))
-                Log.e("PoesiaVM", "Erro inesperado ao excluir poesia", e)
+                Timber.e(e, "Erro inesperado ao excluir poesia: ${e.message}")
             } finally {
                 cancelarExclusao()
             }
@@ -135,10 +136,10 @@ class PoesiaViewModel @Inject constructor(
                 // A UI será atualizada automaticamente pelo Flow de obterTodasPoesiasAction
             } catch (e: ExcecaoApp) {
                 _eventFlow.emit(UiEvent.ShowSnackbar(messageResId = e.stringResId ?: R.string.erro_desconhecido, args = e.args))
-                e.cause?.let { Log.w("PoesiaVM", "Erro (ExcecaoApp) ao alternar favorito: ${e.message}", it) }
+                e.cause?.let { Timber.w(e, "Erro (ExcecaoApp) ao alternar favorito: ${e.message}")}
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ShowSnackbar(R.string.erro_desconhecido))
-                Log.e("PoesiaVM", "Erro inesperado ao alternar favorito", e)
+                Timber.w(e, "\"Erro inesperado ao alternar favorito: ${e.message}")
             }
         }
     }
@@ -158,10 +159,11 @@ class PoesiaViewModel @Inject constructor(
                 // A UI será atualizada automaticamente pelo Flow de obterTodasPoesiasAction
             } catch (e: ExcecaoApp) {
                 _eventFlow.emit(UiEvent.ShowSnackbar(messageResId = e.stringResId ?: R.string.erro_desconhecido, args = e.args))
-                e.cause?.let { Log.w("PoesiaVM", "Erro (ExcecaoApp) ao alternar estado de leitura: ${e.message}", it) }
+                e.cause?.let {
+                    Timber.w(e, "Erro (ExcecaoApp) ao alternar estado de leitura: ${e.message}") }
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ShowSnackbar(R.string.erro_desconhecido))
-                Log.e("PoesiaVM", "Erro inesperado ao alternar estado de leitura", e)
+                Timber.e(e, "Erro inesperado ao alternar favorito: ${e.message}")
             }
         }
     }

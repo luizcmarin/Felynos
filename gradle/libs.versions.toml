@@ -29,6 +29,7 @@ androidx-test-manifest = "1.9.0"
 androidx-core-splashscreen = "1.0.1"
 tema-material3 = "1.13.0"
 coil = "2.7.0"
+timber = "5.0.1"
 
 # Versões do Compose e Testes
 androidx-compose-bom = "2025.08.01"
@@ -80,6 +81,9 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics", version.ref = "animationGraphics" }
 androidx-core-animation = { group = "androidx.core", name = "core-animation", version.ref = "coreAnimation" }
 
+# Outros
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -98,6 +102,7 @@ compose-base = [
     "androidx-activity-compose",
     "androidx-navigation-compose",
     "datastore-preferences",
+    "timber",
 ]
 
 # Componentes visuais do Compose

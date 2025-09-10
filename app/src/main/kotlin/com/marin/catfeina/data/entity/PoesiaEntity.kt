@@ -53,10 +53,10 @@ data class PoesiaEntity(
     val conteudo: String,
 
     @ColumnInfo(name = "texto_final")
-    val textoFinal: String,
+    val textoFinal: String?,
 
     @ColumnInfo(name = "data_criacao")
-    val dataCriacao: Long,
+    val dataCriacao: Long? = null,
 
     @ColumnInfo(name = "data_favoritado")
     val dataFavoritado: Long? = null,
@@ -80,7 +80,7 @@ data class PoesiaEntity(
     val campoUrl2: String? = null,
 
     @ColumnInfo(name = "imagem")
-    val imagem: String,
+    val imagem: String? = null,
 )
 
 /**
@@ -111,8 +111,8 @@ data class Poesia(
     val titulo: String,
     val textoBase: String,
     val conteudo: String,
-    val textoFinal: String,
-    val dataCriacao: Long,
+    val textoFinal: String?,
+    val dataCriacao: Long?,
     val isFavorito: Boolean,
     val dataFavoritado: Long?,
     val isLido: Boolean,
@@ -122,7 +122,7 @@ data class Poesia(
     val campoExtra: String?,
     val campoUrl1: String?,
     val campoUrl2: String?,
-    var imagem: String,
+    var imagem: String?,
 )
 
 /**

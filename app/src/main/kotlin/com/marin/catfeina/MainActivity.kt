@@ -101,7 +101,7 @@ class MainActivity : ComponentActivity() {
 
             CatfeinaTheme(
                 darkTheme = aplicarTemaEscuro,
-                dynamicColor = true
+                dynamicColor = false
             ) {
                 var showLottieSplash by remember { mutableStateOf(true) }
 

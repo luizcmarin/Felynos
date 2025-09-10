@@ -6,6 +6,9 @@
 // =============================================================================
 package com.marin.catfeina
 
+//import com.marin.catfeina.ui.mascote.CatshitoComposable
+//import com.marin.catfeina.ui.mascote.calcularEstado
+//import com.marin.catfeina.ui.mascote.fraseDoCatshito
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -48,8 +51,10 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.marin.catfeina.dominio.DropdownMenuItemWithCheck
 import com.marin.catfeina.dominio.PreferenciaTema
 import com.marin.catfeina.ui.Icones
+import com.marin.catfeina.ui.preferencias.OptionsMenu
 import com.marin.catfeina.ui.preferencias.PreferenciasViewModel
 import com.marin.catfeina.ui.theme.CatfeinaTheme
 import kotlinx.coroutines.launch
@@ -63,12 +68,12 @@ fun MainScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val currentDestination = navBackStackEntry?.destination
+    var optionsMenuExpanded by remember { mutableStateOf(false) }
+    val preferenciaTemaAtual by preferenciasViewModel.preferenciaTema.collectAsState()
+    val currentFontSizeMultiplier by preferenciasViewModel.fontSizeMultiplier.collectAsState()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-
-    var optionsMenuExpanded by remember { mutableStateOf(false) }
-    val preferenciaTemaAtual by preferenciasViewModel.preferenciaTema.collectAsState()
 
     // Lista de rotas onde você NÃO quer mostrar o BottomNavigationBar
     val routesWithoutBottomBar = mutableListOf(
@@ -197,10 +202,38 @@ fun MainScreen(
                                 )
                             }
                         }
+                        OptionsMenu(
+                            expanded = optionsMenuExpanded,
+                            onDismissRequest = { optionsMenuExpanded = false },
+                            preferenciaTemaAtual = preferenciaTemaAtual,
+                            onTemaChange = { novoTema ->
+                                preferenciasViewModel.updatePreferenciaTema(novoTema)
+                                // Decida se quer fechar o menu aqui ou deixar o OptionsMenu lidar com isso
+                                // optionsMenuExpanded = false
+                            },
+                            currentFontSizeMultiplier = currentFontSizeMultiplier,
+                            onFontSizeMultiplierChange = { novoMultiplicador ->
+                                preferenciasViewModel.updateFontSizeMultiplier(novoMultiplicador)
+                            },
+                            onNavigateToSobre = {
+                                navController.navigate(NavDestinations.SOBRE)
+                                optionsMenuExpanded = false // Fechar menu ao navegar
+                            }
+                        )
+
                     }
                 )
             },
             bottomBar = {
+
+//                val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.pata_caminhando))
+//                LottieAnimation(
+//                    composition = composition,
+//                    iterations = LottieConstants.IterateForever,
+//                    modifier = Modifier.size(160.dp)
+//                )
+
+
                 if (shouldShowBottomBar) {
                     NavigationBar(
                         modifier = Modifier.windowInsetsPadding(
@@ -237,29 +270,6 @@ fun MainScreen(
             )
         }
     }
-}
-
-@Composable
-private fun DropdownMenuItemWithCheck(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    DropdownMenuItem(
-        text = { Text(text) },
-        onClick = onClick,
-        leadingIcon = {
-            if (isSelected) {
-                Icon(
-                    imageVector = Icones.Check,
-                    contentDescription = stringResource(R.string.tema_atual_selecionado_descricao),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            } else {
-                // Spacer(Modifier.width(24.dp)) // Para alinhar texto se não houver ícone
-            }
-        }
-    )
 }
 
 @Preview

@@ -1,7 +1,6 @@
 // =============================================================================
 // Arquivo: com.marin.catfeina.dominio.Enums.kt
-// Descrição: Coleção de enums utilitárias para a lógica de negócios e tipagem
-//            de dados da aplicação.
+// Descrição: Coleção de enums utilitárias.
 // =============================================================================
 package com.marin.catfeina.dominio
 
@@ -19,4 +18,8 @@ enum class CategoriaPoesiaEnum(@StringRes val displayNameResId: Int) {
 
 enum class PreferenciaTema {
     SYSTEM, LIGHT, DARK
+}
+
+enum class MascoteEstado {
+    FILHOTE, JOVEM, MESTRE, LENDARIO
 }

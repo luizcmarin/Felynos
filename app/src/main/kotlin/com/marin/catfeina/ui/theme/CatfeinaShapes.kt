@@ -1,5 +1,5 @@
 // =============================================================================
-// Arquivo: com.marin.catfeina.ui.theme.Shapes.kt
+// Arquivo: com.marin.catfeina.ui.theme.CatfeinaShapes.kt
 // Descrição: Define as configurações de forma (Shapes) para os componentes
 //            Material Design 3 no aplicativo Catfeina.
 //            Especifica os raios dos cantos para diferentes tamanhos de
@@ -12,7 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
 
-val Shapes = Shapes(
+val CatfeinaShapes = Shapes(
     extraSmall = RoundedCornerShape(4.dp),
     small = RoundedCornerShape(8.dp),
     medium = RoundedCornerShape(12.dp), // Forma padrão para muitos componentes como Cards

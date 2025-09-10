@@ -1,12 +1,10 @@
 // =============================================================================
 // Arquivo: com.marin.catfeina.ui.preferencias.PreferenciasViewModel.kt
 // Descrição: ViewModel responsável por gerenciar a lógica de negócios
-//            relacionada às preferências do usuário, especificamente a
-//            preferência de tema do aplicativo (claro, escuro, sistema).
-//            Ele interage com o PreferenciasRepository para obter e atualizar
-//            a configuração de tema e expõe essa configuração como um StateFlow
-//            para ser observado pela UI (por exemplo, MainActivity).
-//            Utiliza Hilt para injeção de dependência.
+//            relacionada às preferências do usuário, como tema do aplicativo
+//            e tamanho da fonte do conteúdo da poesia.
+//            Interage com PreferenciasRepository e expõe as configurações
+//            como StateFlows para a UI.
 // =============================================================================
 package com.marin.catfeina.ui.preferencias
 
@@ -23,25 +21,41 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreferenciasViewModel @Inject constructor(
-    private val preferenciasRepository: PreferenciasRepository // Convenção: nome do parâmetro em camelCase
+    private val preferenciasRepository: PreferenciasRepository
 ) : ViewModel() {
 
-    // Expõe a preferência de tema atual como StateFlow
-    // Renomeado de currentPreferenciaTema para preferenciaTema para consistência com MainActivity
     val preferenciaTema: StateFlow<PreferenciaTema> = preferenciasRepository.preferenciaTemaFlow
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L), // Sufixo L para Long
-            initialValue = PreferenciaTema.SYSTEM // Valor inicial antes do DataStore carregar
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = PreferenciaTema.SYSTEM
         )
 
-    /**
-     * Atualiza a preferência de tema do usuário no DataStore.
-     * @param novaPreferencia A nova configuração de tema a ser aplicada.
-     */
     fun updatePreferenciaTema(novaPreferencia: PreferenciaTema) {
         viewModelScope.launch {
             preferenciasRepository.updatePreferenciaTema(novaPreferencia)
+        }
+    }
+
+    // --- LÓGICA PARA O TAMANHO DA FONTE ---
+
+    val fontSizeMultiplier: StateFlow<Float> = preferenciasRepository.fontSizeMultiplierFlow
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = 1.0f // Valor inicial antes do DataStore carregar
+        )
+
+    /**
+     * Atualiza o multiplicador de tamanho de fonte para o conteúdo da poesia.
+     * @param novoMultiplicador O novo multiplicador a ser aplicado (ex: 0.8f, 1.0f, 1.2f).
+     */
+    fun updateFontSizeMultiplier(novoMultiplicador: Float) {
+        viewModelScope.launch {
+            // Você pode adicionar validações aqui se desejar, ex:
+            // val clampedMultiplier = novoMultiplicador.coerceIn(0.7f, 2.0f)
+            // preferenciasRepository.updateFontSizeMultiplier(clampedMultiplier)
+            preferenciasRepository.updateFontSizeMultiplier(novoMultiplicador)
         }
     }
 }

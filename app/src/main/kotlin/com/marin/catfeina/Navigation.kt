@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.marin.catfeina.ui.Icones
+import com.marin.catfeina.ui.poesias.PoesiaDetailScreen
 import com.marin.catfeina.ui.poesias.PoesiaScreen
 import com.marin.catfeina.ui.screens.PrivacyPolicyScreen
 import com.marin.catfeina.ui.screens.SobreScreen
@@ -104,10 +105,8 @@ fun CatfeinaNavGraph(
             route = NavDestinations.POESIA_DETALHE,
             arguments = listOf(navArgument(ARG_POESIA_ID) { type = NavType.LongType })
         ) {
-//            TODO:   FIX:  MUDAR AQUI PARA A TELA DE DETALHE DA POESIA
-            SobreScreen(
+            PoesiaDetailScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToPrivacyPolicy = { navController.navigate(NavDestinations.POLITICA_PRIVACIDADE) }
             )
         }
 

@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#0d6efd</color>
-    <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorPrimaryContainer">#031633</color>
-    <color name="colorOnPrimaryContainer">#6ea8fe</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Paleta Catfeina Poesia - Mapeamento para XML (Modo Escuro) -->
 
-    <color name="colorSecondary">#343a40</color>
-    <color name="colorOnSecondary">#dee2e6</color>
-    <color name="colorSecondaryContainer">#161719</color>
-    <color name="colorOnSecondaryContainer">#a7acb1</color>
+    <!-- Primário (Nosso Bordô Discreto) -->
+    <color name="colorPrimary" tools:ignore="UnusedResources">#803732</color> <!-- DeepBordeaux40 -->
+    <color name="colorOnPrimary" tools:ignore="UnusedResources">#FFFFFF</color>
+    <color name="colorPrimaryContainer" tools:ignore="UnusedResources">#4D1F1C</color> <!-- DeepBordeaux20 -->
+    <color name="colorOnPrimaryContainer" tools:ignore="UnusedResources">#E5BDBA</color> <!-- DeepBordeaux80 -->
 
-    <color name="colorTertiary">#20c997</color>
-    <color name="colorOnTertiary">#000000</color>
-    <color name="colorTertiaryContainer">#022a20</color>
-    <color name="colorOnTertiaryContainer">#6cdcc1</color>
+    <!-- Secundário (Nosso Beige40 no modo escuro) -->
+    <color name="colorSecondary" tools:ignore="UnusedResources">#A89F8D</color> <!-- Beige40 -->
+    <color name="colorOnSecondary" tools:ignore="UnusedResources">#493C36</color> <!-- DarkSepiaBrown -->
+    <color name="colorSecondaryContainer" tools:ignore="UnusedResources">#6B6559</color> <!-- Beige20 -->
+    <color name="colorOnSecondaryContainer" tools:ignore="UnusedResources">#E6DACC</color> <!-- Beige90 -->
 
-    <color name="colorError">#dc3545</color>
-    <color name="colorOnError">#FFFFFF</color>
-    <color name="colorErrorContainer">#2c0b0e</color>
-    <color name="colorOnErrorContainer">#ea868f</color>
+    <!-- Terciário (Nosso Beige80 no modo escuro) -->
+    <color name="colorTertiary" tools:ignore="UnusedResources">#DCD0B9</color> <!-- Beige80 -->
+    <color name="colorOnTertiary" tools:ignore="UnusedResources">#3F3B33</color> <!-- Beige10 -->
+    <color name="colorTertiaryContainer" tools:ignore="UnusedResources">#A89F8D</color> <!-- Beige40 -->
+    <color name="colorOnTertiaryContainer" tools:ignore="UnusedResources">#F5F0E6</color> <!-- Cream90 -->
 
-    <color name="android_colorBackground">#212529</color>
-    <color name="colorOnBackground">#dee2e6</color>
+    <!-- Erro -->
+    <color name="colorError" tools:ignore="UnusedResources">#BA1A1A</color> <!-- ErrorRed40 -->
+    <color name="colorOnError" tools:ignore="UnusedResources">#FFFFFF</color>
+    <color name="colorErrorContainer" tools:ignore="UnusedResources">#690005</color> <!-- ErrorRed20 -->
+    <color name="colorOnErrorContainer" tools:ignore="UnusedResources">#FFDAD6</color> <!-- ErrorRed90 -->
 
-    <color name="colorSurface">#212529</color>
-    <color name="colorOnSurface">#dee2e6</color>
-    <color name="colorSurfaceVariant">#343a40</color>
-    <color name="colorOnSurfaceVariant">#ced4da</color>
+    <!-- Fundo e Superfície -->
+    <color name="android_colorBackground" tools:ignore="UnusedResources">#2E2A26</color> <!-- WarmGray10 -->
+    <color name="colorOnBackground" tools:ignore="UnusedResources">#F5F0E6</color> <!-- Cream90 -->
 
-    <color name="colorOutline">#495057</color>
-    <color name="colorOutlineVariant">#343a40</color>
-    <color name="colorScrim">#99000000</color>
+    <color name="colorSurface" tools:ignore="UnusedResources">#433F3A</color> <!-- WarmGray20 -->
+    <color name="colorOnSurface" tools:ignore="UnusedResources">#FBF5EB</color> <!-- Cream95 -->
+    <color name="colorSurfaceVariant" tools:ignore="UnusedResources">#6B6559</color> <!-- Beige20 -->
+    <color name="colorOnSurfaceVariant" tools:ignore="UnusedResources">#DCD0B9</color> <!-- Beige80 -->
 
-    <color name="colorInverseSurface">#f8f9fa</color>
-    <color name="colorInverseOnSurface">#212529</color>
-    <color name="colorInversePrimary">#0d6efd</color>
+    <!-- Outros -->
+    <color name="colorOutline" tools:ignore="UnusedResources">#706B64</color> <!-- WarmGray40 -->
+    <color name="colorOutlineVariant" tools:ignore="UnusedResources">#A89F8D</color> <!-- Beige40 -->
+    <color name="colorScrim" tools:ignore="UnusedResources">#A6000000</color> <!-- Padrão escuro -->
 
-    <color name="splash_background_color">#000000</color>
+    <!-- Invertidos -->
+    <color name="colorInverseSurface" tools:ignore="UnusedResources">#F5F0E6</color> <!-- Cream90 -->
+    <color name="colorInverseOnSurface" tools:ignore="UnusedResources">#2E2A26</color> <!-- WarmGray10 -->
+    <color name="colorInversePrimary" tools:ignore="UnusedResources">#A1514B</color> <!-- DeepBordeaux60 -->
+
+    <!-- Cor de Splash (esta PODE ser usada diretamente pelo XML do tema da splash screen se houver um tema específico para noite) -->
+    <color name="splash_background_color">#2E2A26</color> <!-- WarmGray10 -->
+
+    <!-- Cores adicionais para referência -->
+    <color name="catfeina_warm_gray_10" tools:ignore="UnusedResources">#2E2A26</color>
+    <color name="catfeina_deep_bordeaux_40" tools:ignore="UnusedResources">#803732</color>
 </resources>

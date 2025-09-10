@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4050eb285a2ff8476fc8baf45af5b81a",
+    "identityHash": "1e0270eb206e0d85ae5a852dc5abe6d2",
     "entities": [
       {
         "tableName": "poesias",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `categoria` TEXT NOT NULL, `titulo` TEXT NOT NULL, `texto_base` TEXT NOT NULL, `conteudo` TEXT NOT NULL, `texto_final` TEXT NOT NULL, `data_criacao` INTEGER NOT NULL, `data_favoritado` INTEGER, `data_leitura` INTEGER, `campo_audio` TEXT, `campo_video` TEXT, `campo_extra` TEXT, `campo_url1` TEXT, `campo_url2` TEXT, `imagem` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `categoria` TEXT NOT NULL, `titulo` TEXT NOT NULL, `texto_base` TEXT NOT NULL, `conteudo` TEXT NOT NULL, `texto_final` TEXT, `data_criacao` INTEGER, `data_favoritado` INTEGER, `data_leitura` INTEGER, `campo_audio` TEXT, `campo_video` TEXT, `campo_extra` TEXT, `campo_url1` TEXT, `campo_url2` TEXT, `imagem` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -41,14 +41,12 @@
           {
             "fieldPath": "textoFinal",
             "columnName": "texto_final",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "dataCriacao",
             "columnName": "data_criacao",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "dataFavoritado",
@@ -88,8 +86,7 @@
           {
             "fieldPath": "imagem",
             "columnName": "imagem",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -149,7 +146,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4050eb285a2ff8476fc8baf45af5b81a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1e0270eb206e0d85ae5a852dc5abe6d2')"
     ]
   }
 }

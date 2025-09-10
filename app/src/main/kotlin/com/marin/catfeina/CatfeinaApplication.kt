@@ -8,14 +8,11 @@
 package com.marin.catfeina
 
 import android.app.Application
-import android.util.Log
 import com.marin.catfeina.data.PreferenciasRepository
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -26,7 +23,7 @@ class CatfeinaApplication : Application() {
      * Usa [SupervisorJob] para que falhas em um filho não cancelem outros ou o próprio escopo.
      * Usa [Dispatchers.IO] como padrão para operações de longa duração ou I/O.
      */
-    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+//    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     /**
      * Repositório de preferências, injetado para verificar se os dados iniciais
@@ -44,7 +41,15 @@ class CatfeinaApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        Log.d("CatfeinaApplication", "onCreate: Iniciando Catfeína.")
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        } else {
+            // Para builds de release, você pode querer plantar uma árvore
+            // que envie logs para um serviço de crash reporting, por exemplo.
+            // Ex: Timber.plant(CrashReportingTree())
+            // Ou não plantar nada para não logar em release.
+        }
     }
 
 }

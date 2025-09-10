@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -262,28 +261,30 @@ private fun PoesiaListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Exibir imagem da poesia
-            if (poesia.imagem.isNotBlank()) {
-                AsyncImage(
-                    model = poesia.imagem,
-                    contentDescription = stringResource(R.string.capa_da_poesia, poesia.titulo),
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop,
-                    placeholder = painterResource(id = R.drawable.ic_placeholder_image),
-                    error = painterResource(id = R.drawable.ic_placeholder_image)
-                )
-                Spacer(Modifier.width(16.dp))
-            } else {
-                Icon(
-                    imageVector = Icones.SemImagem,
-                    contentDescription = stringResource(R.string.imagem_nao_disponivel),
-                    modifier = Modifier
-                        .size(72.dp)
-                        .padding(8.dp), // Padding dentro do ícone se não houver imagem
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(Modifier.width(16.dp))
+            poesia.imagem?.let {
+                if (it.isNotBlank()) {
+                    AsyncImage(
+                        model = poesia.imagem,
+                        contentDescription = stringResource(R.string.capa_da_poesia, poesia.titulo),
+                        modifier = Modifier
+                            .size(72.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop,
+                        placeholder = painterResource(id = R.drawable.ic_placeholder_image),
+                        error = painterResource(id = R.drawable.ic_placeholder_image)
+                    )
+                    Spacer(Modifier.width(16.dp))
+                } else {
+                    Icon(
+                        imageVector = Icones.SemImagem,
+                        contentDescription = stringResource(R.string.imagem_nao_disponivel),
+                        modifier = Modifier
+                            .size(72.dp)
+                            .padding(8.dp), // Padding dentro do ícone se não houver imagem
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(Modifier.width(16.dp))
+                }
             }
 
             Column(modifier = Modifier.weight(1f)) {
