@@ -12,7 +12,7 @@ minSdk = "29"
 
 # Versões da sua arquitetura
 agp = "8.13.0"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 ksp = "2.2.10-2.0.2"
 hilt = "2.57.1"
 hilt-navigation-compose = "1.2.0"
