@@ -257,14 +257,72 @@ fun PoesiaDetailContent(
         baseMultiplier.coerceAtLeast(1.4f)
     }
 
+    val imgBorderRadiusPx = remember(MaterialTheme.shapes.medium, density) { 8.dp.asPxInt() }
+    val verticalSpacingEm = 1.0f // Define um espaçamento padrão de 1em
+    val verticalSpacingPx = remember(bodyFontSizePx, verticalSpacingEm) {
+        (bodyFontSizePx * verticalSpacingEm).toInt()
+    }
+
+    // H1 (como já tínhamos, mas vamos garantir que h1TextColorHex e h1MarginBottomPx estejam definidos)
     val h1TextStyle = typography.headlineLarge
     val h1FontSizePx = remember(h1TextStyle.fontSize, fontSizeMultiplier, density) { (h1TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.2f)).sp.asPxInt() }
     val h1FontWeight = remember(h1TextStyle.fontWeight) { h1TextStyle.fontWeight?.weight ?: FontWeight.Bold.weight }
-    val h1LineHeightMultiplier = remember(h1TextStyle.lineHeight, h1TextStyle.fontSize, density) {
+    val h1LineHeightMultiplier = remember(h1TextStyle.lineHeight, h1TextStyle.fontSize) {
         if (h1TextStyle.fontSize != 0.sp && h1TextStyle.lineHeight != TextUnit.Unspecified) (h1TextStyle.lineHeight.value / h1TextStyle.fontSize.value).coerceAtLeast(1.2f) else 1.3f
     }
+    val h1TextColorHex = remember(colorScheme.onBackground) { colorScheme.onBackground.toHex() } // Ou a cor que você definiu para H1
+    val h1MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.5).toInt() }
+    val h1MarginBottomPx = remember(density) { 8.dp.asPxInt() }
 
-    val imgBorderRadiusPx = remember(MaterialTheme.shapes.medium, density) { 8.dp.asPxInt() }
+    // H2
+    val h2TextStyle = typography.headlineMedium
+    val h2FontSizePx = remember(h2TextStyle.fontSize, fontSizeMultiplier, density) { (h2TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.15f)).sp.asPxInt() }
+    val h2FontWeight = remember(h2TextStyle.fontWeight) { h2TextStyle.fontWeight?.weight ?: FontWeight.Bold.weight }
+    val h2LineHeightMultiplier = remember(h2TextStyle.lineHeight, h2TextStyle.fontSize) {
+        if (h2TextStyle.fontSize != 0.sp && h2TextStyle.lineHeight != TextUnit.Unspecified) (h2TextStyle.lineHeight.value / h2TextStyle.fontSize.value).coerceAtLeast(1.2f) else 1.25f
+    }
+    val h2MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.35f).toInt() }
+    val h2MarginBottomPx = remember(density) { 6.dp.asPxInt() }
+
+    // H3
+    val h3TextStyle = typography.headlineSmall
+    val h3FontSizePx = remember(h3TextStyle.fontSize, fontSizeMultiplier, density) { (h3TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.1f)).sp.asPxInt() }
+    val h3FontWeight = remember(h3TextStyle.fontWeight) { h3TextStyle.fontWeight?.weight ?: FontWeight.SemiBold.weight }
+    val h3LineHeightMultiplier = remember(h3TextStyle.lineHeight, h3TextStyle.fontSize) {
+        if (h3TextStyle.fontSize != 0.sp && h3TextStyle.lineHeight != TextUnit.Unspecified) (h3TextStyle.lineHeight.value / h3TextStyle.fontSize.value).coerceAtLeast(1.15f) else 1.2f
+    }
+    val h3MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.25f).toInt() }
+    val h3MarginBottomPx = remember(density) { 4.dp.asPxInt() }
+
+    // H4
+    val h4TextStyle = typography.titleLarge
+    val h4FontSizePx = remember(h4TextStyle.fontSize, fontSizeMultiplier, density) { (h4TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.05f)).sp.asPxInt() }
+    val h4FontWeight = remember(h4TextStyle.fontWeight) { h4TextStyle.fontWeight?.weight ?: FontWeight.SemiBold.weight }
+    val h4LineHeightMultiplier = remember(h4TextStyle.lineHeight, h4TextStyle.fontSize) {
+        if (h4TextStyle.fontSize != 0.sp && h4TextStyle.lineHeight != TextUnit.Unspecified) (h4TextStyle.lineHeight.value / h4TextStyle.fontSize.value).coerceAtLeast(1.1f) else 1.15f
+    }
+    val h4MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.15f).toInt() }
+    val h4MarginBottomPx = remember(density) { 3.dp.asPxInt() }
+
+    // H5
+    val h5TextStyle = typography.titleMedium
+    val h5FontSizePx = remember(h5TextStyle.fontSize, fontSizeMultiplier, density) { (h5TextStyle.fontSize.value * fontSizeMultiplier).sp.asPxInt() }
+    val h5FontWeight = remember(h5TextStyle.fontWeight) { h5TextStyle.fontWeight?.weight ?: FontWeight.Medium.weight }
+    val h5LineHeightMultiplier = remember(h5TextStyle.lineHeight, h5TextStyle.fontSize) {
+        if (h5TextStyle.fontSize != 0.sp && h5TextStyle.lineHeight != TextUnit.Unspecified) (h5TextStyle.lineHeight.value / h5TextStyle.fontSize.value).coerceAtLeast(1.05f) else 1.1f
+    }
+    val h5MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.05f).toInt() }
+    val h5MarginBottomPx = remember(density) { 2.dp.asPxInt() }
+
+    // H6
+    val h6TextStyle = typography.titleSmall
+    val h6FontSizePx = remember(h6TextStyle.fontSize, fontSizeMultiplier, density) { (h6TextStyle.fontSize.value * fontSizeMultiplier).sp.asPxInt() }
+    val h6FontWeight = remember(h6TextStyle.fontWeight) { h6TextStyle.fontWeight?.weight ?: FontWeight.Medium.weight }
+    val h6LineHeightMultiplier = remember(h6TextStyle.lineHeight, h6TextStyle.fontSize) {
+        if (h6TextStyle.fontSize != 0.sp && h6TextStyle.lineHeight != TextUnit.Unspecified) (h6TextStyle.lineHeight.value / h6TextStyle.fontSize.value).coerceAtLeast(1.0f) else 1.05f
+    }
+    val h6MarginTopPx = remember(verticalSpacingPx) { verticalSpacingPx }
+    val h6MarginBottomPx = remember(density) { 1.dp.asPxInt() }
 
     val legendaTituloFontSizePx = remember(typography.titleMedium.fontSize, fontSizeMultiplier, density) { (typography.titleMedium.fontSize.value * fontSizeMultiplier.coerceAtMost(1.1f)).sp.asPxInt() }
     val legendaTituloFontWeight = remember(typography.titleMedium.fontWeight) { typography.titleMedium.fontWeight?.weight ?: FontWeight.SemiBold.weight }
@@ -282,7 +340,8 @@ fun PoesiaDetailContent(
         fontFamilyCss, bodyFontSizePx, bodyLineHeightMultiplier,
         h1FontSizePx, h1FontWeight, h1LineHeightMultiplier, imgBorderRadiusPx,
         legendaTituloFontSizePx, legendaTituloFontWeight, legendaFontSizePx, legendaFontWeight,
-        legendaTextoFontSizePx, legendaTextoFontWeight, destaqueFontSizePx, destaqueFontWeight, blockquoteBgHex, imgPlaceholderBgHex
+        legendaTextoFontSizePx, legendaTextoFontWeight, destaqueFontSizePx, destaqueFontWeight, blockquoteBgHex,
+        verticalSpacingPx,  verticalSpacingEm, imgPlaceholderBgHex
     ) {
         """
         <style type="text/css">
@@ -295,8 +354,9 @@ fun PoesiaDetailContent(
             a:hover { text-decoration: underline; }
             img {
                 max-width: 100%; height: auto; display: block;
-                margin-top: ${12.dp.asPxInt()}px; margin-bottom: ${12.dp.asPxInt()}px;
                 border-radius: ${imgBorderRadiusPx}px; background-color: #${imgPlaceholderBgHex};
+                margin-top: ${verticalSpacingEm}em;
+                margin-bottom: ${verticalSpacingEm}em;
             }
             p, li, div {
                 line-height: $bodyLineHeightMultiplier; font-size: ${bodyFontSizePx}px; color: #$corTextoHex;
@@ -304,11 +364,51 @@ fun PoesiaDetailContent(
             }
             p:first-child, div:first-child { margin-top: 0; }
             p:last-child, div:last-child { margin-bottom: 0; }
-            h1 {
-                font-size: ${h1FontSizePx}px; color: #$corTextoHex; font-weight: $h1FontWeight;
-                line-height: $h1LineHeightMultiplier; margin-top: ${16.dp.asPxInt()}px; margin-bottom: ${8.dp.asPxInt()}px;
+            h1, h2, h3, h4, h5, h6 {
+                color: ${h1TextColorHex};
             }
-            /* TODO: Mapear H2-H6 para typography.headlineMedium, titleLarge, etc., aplicando fontSizeMultiplier */
+            h1 {
+                font-size: ${h1FontSizePx}px;
+                font-weight: ${h1FontWeight};line-height: ${h1LineHeightMultiplier};
+                margin-top: ${h1MarginTopPx}px;
+                margin-bottom: ${h1MarginBottomPx}px;
+            }
+            h2 {
+                font-size: ${h2FontSizePx}px;
+                font-weight: ${h2FontWeight};
+                line-height: ${h2LineHeightMultiplier};
+                margin-top: ${h2MarginTopPx}px;
+                margin-bottom: ${h2MarginBottomPx}px;
+            }
+            h3 {
+                font-size: ${h3FontSizePx}px;
+                font-weight: ${h3FontWeight};
+                line-height: ${h3LineHeightMultiplier};
+                margin-top: ${h3MarginTopPx}px;
+                margin-bottom: ${h3MarginBottomPx}px;
+            }
+            h4 {
+                font-size: ${h4FontSizePx}px;
+                font-weight: ${h4FontWeight};
+                line-height: ${h4LineHeightMultiplier};
+                margin-top: ${h4MarginTopPx}px;
+                margin-bottom: ${h4MarginBottomPx}px;
+            }
+            h5 {
+                font-size: ${h5FontSizePx}px;
+                font-weight: ${h5FontWeight};
+                line-height: ${h5LineHeightMultiplier};
+                margin-top: ${h5MarginTopPx}px;
+                margin-bottom: ${h5MarginBottomPx}px;
+            }
+            h6 {
+                font-size: ${h6FontSizePx}px;
+                font-weight: ${h6FontWeight};
+                line-height: ${h6LineHeightMultiplier};
+                margin-top: ${h6MarginTopPx}px;
+                margin-bottom: ${h6MarginBottomPx}px;
+            }
+
             blockquote {
                 border-left: 3px solid #$corBordaBlocoCitacaoHex; padding: ${8.dp.asPxInt()}px ${12.dp.asPxInt()}px;
                 margin: ${12.dp.asPxInt()}px 0; font-style: italic;
