@@ -79,7 +79,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.marin.catfeina.R
 import com.marin.catfeina.data.entity.Poesia
@@ -100,6 +100,11 @@ fun PoesiaDetailScreen(
     val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val fontSizeMultiplier: Float by viewModel.fontSizeMultiplier.collectAsState()
+
+    // Log para verificar se fontSizeMultiplier está sendo recebido e mudando
+    // LaunchedEffect(fontSizeMultiplier) {
+    //     Log.d("WebViewFontSize", "PoesiaDetailScreen: fontSizeMultiplier = $fontSizeMultiplier")
+    // }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collectLatest { event ->
@@ -208,7 +213,7 @@ private fun PoesiaDetailTopAppBar(
 @Composable
 fun PoesiaDetailContent(
     poesia: Poesia,
-    fontSizeMultiplier: Float
+    fontSizeMultiplier: Float // Este é o gatilho principal
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -217,9 +222,15 @@ fun PoesiaDetailContent(
     val typography = MaterialTheme.typography
     val density = LocalDensity.current
 
+    // Log para verificar se PoesiaDetailContent está sendo recomposto quando fontSizeMultiplier muda
+    // LaunchedEffect(fontSizeMultiplier) {
+    //     Log.d("WebViewFontSize", "PoesiaDetailContent RECOMPOSED with fontSizeMultiplier = $fontSizeMultiplier")
+    // }
+
     fun TextUnit.asPxInt(): Int = with(density) { this@asPxInt.toPx().toInt() }
     fun Dp.asPxInt(): Int = with(density) { this@asPxInt.toPx().toInt() }
 
+    // Cores e outros valores que dependem do tema, mas não do fontSizeMultiplier diretamente
     val corTextoHex = remember(colorScheme.onSurface) { colorScheme.onSurface.toHex() }
     val corLinkHex = remember(colorScheme.primary) { colorScheme.primary.toHex() }
     val corBordaBlocoCitacaoHex = remember(colorScheme.primary) { colorScheme.primary.copy(alpha = 0.5f).toHex() }
@@ -237,92 +248,75 @@ fun PoesiaDetailContent(
     val corPoesiaLegendaTexto = remember(colorScheme.onSurfaceVariant) { colorScheme.onSurfaceVariant.toHex() }
     val corPoesiaDestaque = remember(colorScheme.primary) { colorScheme.primary.toHex() }
     val imgPlaceholderBgHex = remember(colorScheme.surfaceVariant) { colorScheme.surfaceVariant.copy(alpha = 0.3f).toHex() }
+    val h1TextColorHex = remember(colorScheme.onBackground) { colorScheme.onBackground.toHex() } // Assumindo que esta é a cor H1 desejada
 
     val fontFamilyCss = remember(typography.bodyLarge.fontFamily) {
         when (typography.bodyLarge.fontFamily) {
             FontFamily.SansSerif -> "sans-serif"
             FontFamily.Monospace -> "monospace"
-            else -> "sans-serif"
+            else -> "sans-serif" // Padrão
         }
     }
+    val imgBorderRadiusPx = remember(density) { 8.dp.asPxInt() } // Depende da densidade, não do multiplicador
 
+    // --- Valores que dependem de fontSizeMultiplier ---
     val baseBodyTextStyle = typography.bodyMedium
     val bodyFontSizePx = remember(baseBodyTextStyle.fontSize, fontSizeMultiplier, density) {
-        (baseBodyTextStyle.fontSize.value * fontSizeMultiplier).sp.asPxInt()
+        val size = (baseBodyTextStyle.fontSize.value * fontSizeMultiplier).sp.asPxInt()
+        // Log.d("WebViewFontSize", "bodyFontSizePx recalculado: $size (multiplier: $fontSizeMultiplier)")
+        size
     }
-    val bodyLineHeightMultiplier = remember(baseBodyTextStyle.lineHeight, baseBodyTextStyle.fontSize) { // fontSizeMultiplier não afeta diretamente aqui
+    val bodyLineHeightMultiplier = remember(baseBodyTextStyle.lineHeight, baseBodyTextStyle.fontSize) {
         val baseMultiplier = if (baseBodyTextStyle.fontSize != 0.sp && baseBodyTextStyle.lineHeight != TextUnit.Unspecified) {
             (baseBodyTextStyle.lineHeight.value / baseBodyTextStyle.fontSize.value)
         } else 1.5f
         baseMultiplier.coerceAtLeast(1.4f)
     }
-
-    val imgBorderRadiusPx = remember(MaterialTheme.shapes.medium, density) { 8.dp.asPxInt() }
-    val verticalSpacingEm = 1.0f // Define um espaçamento padrão de 1em
-    val verticalSpacingPx = remember(bodyFontSizePx, verticalSpacingEm) {
-        (bodyFontSizePx * verticalSpacingEm).toInt()
+    val verticalSpacingPx = remember(bodyFontSizePx) { // verticalSpacingEm era 1.0f, então depende diretamente de bodyFontSizePx
+        bodyFontSizePx
     }
 
-    // H1 (como já tínhamos, mas vamos garantir que h1TextColorHex e h1MarginBottomPx estejam definidos)
     val h1TextStyle = typography.headlineLarge
     val h1FontSizePx = remember(h1TextStyle.fontSize, fontSizeMultiplier, density) { (h1TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.2f)).sp.asPxInt() }
     val h1FontWeight = remember(h1TextStyle.fontWeight) { h1TextStyle.fontWeight?.weight ?: FontWeight.Bold.weight }
-    val h1LineHeightMultiplier = remember(h1TextStyle.lineHeight, h1TextStyle.fontSize) {
-        if (h1TextStyle.fontSize != 0.sp && h1TextStyle.lineHeight != TextUnit.Unspecified) (h1TextStyle.lineHeight.value / h1TextStyle.fontSize.value).coerceAtLeast(1.2f) else 1.3f
-    }
-    val h1TextColorHex = remember(colorScheme.onBackground) { colorScheme.onBackground.toHex() } // Ou a cor que você definiu para H1
+    val h1LineHeightMultiplier = remember(h1TextStyle.lineHeight, h1TextStyle.fontSize) { if (h1TextStyle.fontSize != 0.sp && h1TextStyle.lineHeight != TextUnit.Unspecified) (h1TextStyle.lineHeight.value / h1TextStyle.fontSize.value).coerceAtLeast(1.2f) else 1.3f }
     val h1MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.5).toInt() }
-    val h1MarginBottomPx = remember(density) { 8.dp.asPxInt() }
+    val h1MarginBottomPx = remember(density, fontSizeMultiplier, bodyFontSizePx) { (bodyFontSizePx * 0.35f).toInt().coerceAtLeast(8.dp.asPxInt()/2) } // Exemplo: Tornar dependente de bodyFontSizePx
 
-    // H2
     val h2TextStyle = typography.headlineMedium
     val h2FontSizePx = remember(h2TextStyle.fontSize, fontSizeMultiplier, density) { (h2TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.15f)).sp.asPxInt() }
     val h2FontWeight = remember(h2TextStyle.fontWeight) { h2TextStyle.fontWeight?.weight ?: FontWeight.Bold.weight }
-    val h2LineHeightMultiplier = remember(h2TextStyle.lineHeight, h2TextStyle.fontSize) {
-        if (h2TextStyle.fontSize != 0.sp && h2TextStyle.lineHeight != TextUnit.Unspecified) (h2TextStyle.lineHeight.value / h2TextStyle.fontSize.value).coerceAtLeast(1.2f) else 1.25f
-    }
+    val h2LineHeightMultiplier = remember(h2TextStyle.lineHeight, h2TextStyle.fontSize) { if (h2TextStyle.fontSize != 0.sp && h2TextStyle.lineHeight != TextUnit.Unspecified) (h2TextStyle.lineHeight.value / h2TextStyle.fontSize.value).coerceAtLeast(1.2f) else 1.25f }
     val h2MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.35f).toInt() }
-    val h2MarginBottomPx = remember(density) { 6.dp.asPxInt() }
+    val h2MarginBottomPx = remember(density, fontSizeMultiplier, bodyFontSizePx) { (bodyFontSizePx * 0.30f).toInt().coerceAtLeast(6.dp.asPxInt()/2) }
 
-    // H3
     val h3TextStyle = typography.headlineSmall
     val h3FontSizePx = remember(h3TextStyle.fontSize, fontSizeMultiplier, density) { (h3TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.1f)).sp.asPxInt() }
     val h3FontWeight = remember(h3TextStyle.fontWeight) { h3TextStyle.fontWeight?.weight ?: FontWeight.SemiBold.weight }
-    val h3LineHeightMultiplier = remember(h3TextStyle.lineHeight, h3TextStyle.fontSize) {
-        if (h3TextStyle.fontSize != 0.sp && h3TextStyle.lineHeight != TextUnit.Unspecified) (h3TextStyle.lineHeight.value / h3TextStyle.fontSize.value).coerceAtLeast(1.15f) else 1.2f
-    }
+    val h3LineHeightMultiplier = remember(h3TextStyle.lineHeight, h3TextStyle.fontSize) { if (h3TextStyle.fontSize != 0.sp && h3TextStyle.lineHeight != TextUnit.Unspecified) (h3TextStyle.lineHeight.value / h3TextStyle.fontSize.value).coerceAtLeast(1.15f) else 1.2f }
     val h3MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.25f).toInt() }
-    val h3MarginBottomPx = remember(density) { 4.dp.asPxInt() }
+    val h3MarginBottomPx = remember(density, fontSizeMultiplier, bodyFontSizePx) { (bodyFontSizePx * 0.25f).toInt().coerceAtLeast(4.dp.asPxInt()/2) }
 
-    // H4
     val h4TextStyle = typography.titleLarge
     val h4FontSizePx = remember(h4TextStyle.fontSize, fontSizeMultiplier, density) { (h4TextStyle.fontSize.value * fontSizeMultiplier.coerceAtMost(1.05f)).sp.asPxInt() }
     val h4FontWeight = remember(h4TextStyle.fontWeight) { h4TextStyle.fontWeight?.weight ?: FontWeight.SemiBold.weight }
-    val h4LineHeightMultiplier = remember(h4TextStyle.lineHeight, h4TextStyle.fontSize) {
-        if (h4TextStyle.fontSize != 0.sp && h4TextStyle.lineHeight != TextUnit.Unspecified) (h4TextStyle.lineHeight.value / h4TextStyle.fontSize.value).coerceAtLeast(1.1f) else 1.15f
-    }
+    val h4LineHeightMultiplier = remember(h4TextStyle.lineHeight, h4TextStyle.fontSize) { if (h4TextStyle.fontSize != 0.sp && h4TextStyle.lineHeight != TextUnit.Unspecified) (h4TextStyle.lineHeight.value / h4TextStyle.fontSize.value).coerceAtLeast(1.1f) else 1.15f }
     val h4MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.15f).toInt() }
-    val h4MarginBottomPx = remember(density) { 3.dp.asPxInt() }
+    val h4MarginBottomPx = remember(density, fontSizeMultiplier, bodyFontSizePx) { (bodyFontSizePx * 0.20f).toInt().coerceAtLeast(3.dp.asPxInt()/2) }
 
-    // H5
     val h5TextStyle = typography.titleMedium
     val h5FontSizePx = remember(h5TextStyle.fontSize, fontSizeMultiplier, density) { (h5TextStyle.fontSize.value * fontSizeMultiplier).sp.asPxInt() }
     val h5FontWeight = remember(h5TextStyle.fontWeight) { h5TextStyle.fontWeight?.weight ?: FontWeight.Medium.weight }
-    val h5LineHeightMultiplier = remember(h5TextStyle.lineHeight, h5TextStyle.fontSize) {
-        if (h5TextStyle.fontSize != 0.sp && h5TextStyle.lineHeight != TextUnit.Unspecified) (h5TextStyle.lineHeight.value / h5TextStyle.fontSize.value).coerceAtLeast(1.05f) else 1.1f
-    }
+    val h5LineHeightMultiplier = remember(h5TextStyle.lineHeight, h5TextStyle.fontSize) { if (h5TextStyle.fontSize != 0.sp && h5TextStyle.lineHeight != TextUnit.Unspecified) (h5TextStyle.lineHeight.value / h5TextStyle.fontSize.value).coerceAtLeast(1.05f) else 1.1f }
     val h5MarginTopPx = remember(verticalSpacingPx) { (verticalSpacingPx * 1.05f).toInt() }
-    val h5MarginBottomPx = remember(density) { 2.dp.asPxInt() }
+    val h5MarginBottomPx = remember(density, fontSizeMultiplier, bodyFontSizePx) { (bodyFontSizePx * 0.15f).toInt().coerceAtLeast(2.dp.asPxInt()/2) }
 
-    // H6
     val h6TextStyle = typography.titleSmall
     val h6FontSizePx = remember(h6TextStyle.fontSize, fontSizeMultiplier, density) { (h6TextStyle.fontSize.value * fontSizeMultiplier).sp.asPxInt() }
     val h6FontWeight = remember(h6TextStyle.fontWeight) { h6TextStyle.fontWeight?.weight ?: FontWeight.Medium.weight }
-    val h6LineHeightMultiplier = remember(h6TextStyle.lineHeight, h6TextStyle.fontSize) {
-        if (h6TextStyle.fontSize != 0.sp && h6TextStyle.lineHeight != TextUnit.Unspecified) (h6TextStyle.lineHeight.value / h6TextStyle.fontSize.value).coerceAtLeast(1.0f) else 1.05f
-    }
+    val h6LineHeightMultiplier = remember(h6TextStyle.lineHeight, h6TextStyle.fontSize) { if (h6TextStyle.fontSize != 0.sp && h6TextStyle.lineHeight != TextUnit.Unspecified) (h6TextStyle.lineHeight.value / h6TextStyle.fontSize.value).coerceAtLeast(1.0f) else 1.05f }
     val h6MarginTopPx = remember(verticalSpacingPx) { verticalSpacingPx }
-    val h6MarginBottomPx = remember(density) { 1.dp.asPxInt() }
+    val h6MarginBottomPx = remember(density, fontSizeMultiplier, bodyFontSizePx) { (bodyFontSizePx * 0.10f).toInt().coerceAtLeast(1.dp.asPxInt()/2) }
 
     val legendaTituloFontSizePx = remember(typography.titleMedium.fontSize, fontSizeMultiplier, density) { (typography.titleMedium.fontSize.value * fontSizeMultiplier.coerceAtMost(1.1f)).sp.asPxInt() }
     val legendaTituloFontWeight = remember(typography.titleMedium.fontWeight) { typography.titleMedium.fontWeight?.weight ?: FontWeight.SemiBold.weight }
@@ -332,17 +326,45 @@ fun PoesiaDetailContent(
     val legendaTextoFontWeight = remember(typography.bodySmall.fontWeight) { typography.bodySmall.fontWeight?.weight ?: FontWeight.Normal.weight }
     val destaqueFontSizePx = remember(typography.bodyLarge.fontSize, fontSizeMultiplier, density) { (typography.bodyLarge.fontSize.value * fontSizeMultiplier * 1.1f).sp.asPxInt() }
     val destaqueFontWeight = remember(typography.bodyLarge.fontWeight) { typography.bodyLarge.fontWeight?.weight?.plus(100)?.coerceAtMost(900) ?: FontWeight.SemiBold.weight }
+    // --- Fim dos valores que dependem de fontSizeMultiplier ---
 
     val cssStyle = remember(
+        // Chaves que mudam com o tema (cores, fontes base)
         corTextoHex, corLinkHex, corBordaBlocoCitacaoHex, corTextoBlocoCitacaoHex,
         calloutInfoColor, calloutInfoBg, calloutInfoBorder, calloutWarningColorText, calloutWarningBg, calloutWarningBorder,
         corPoesiaLegendaTitulo, corBordaPoesiaLegendaTitulo, corPoesiaLegenda, corPoesiaLegendaTexto, corPoesiaDestaque,
-        fontFamilyCss, bodyFontSizePx, bodyLineHeightMultiplier,
-        h1FontSizePx, h1FontWeight, h1LineHeightMultiplier, imgBorderRadiusPx,
-        legendaTituloFontSizePx, legendaTituloFontWeight, legendaFontSizePx, legendaFontWeight,
-        legendaTextoFontSizePx, legendaTextoFontWeight, destaqueFontSizePx, destaqueFontWeight, blockquoteBgHex,
-        verticalSpacingPx,  verticalSpacingEm, imgPlaceholderBgHex
+        fontFamilyCss, blockquoteBgHex, imgPlaceholderBgHex, h1TextColorHex,
+        // Valores que dependem da densidade, mas não diretamente do fontSizeMultiplier,
+        // mas são usados no CSS e podem ser recalculados se a densidade mudar.
+        imgBorderRadiusPx,
+        // Adicionar density explicitamente se houver cálculos Dp.asPxInt() inline no CSS
+        // que não sejam derivados de variáveis já dependentes de density e fontSizeMultiplier.
+        // No entanto, a maioria dos Dp.asPxInt() são para paddings/bordas fixas,
+        // então o recálculo do CSS é mais impulsionado pelas mudanças de fontSizeMultiplier.
+        density, // Adicionado para cobrir os Dp.asPxInt() inline.
+
+        // Chaves que MUDAM COM fontSizeMultiplier (direta ou indiretamente)
+        // Adicionar TODAS as variáveis calculadas acima que usam fontSizeMultiplier ou são derivadas dele.
+        fontSizeMultiplier, // A chave principal que dispara tudo
+        bodyFontSizePx,
+        bodyLineHeightMultiplier, // Mesmo que não mude COM fontSizeMultiplier, ele é usado e pode mudar com o tema
+        verticalSpacingPx,
+
+        h1FontSizePx, h1FontWeight, h1LineHeightMultiplier, h1MarginTopPx, h1MarginBottomPx,
+        h2FontSizePx, h2FontWeight, h2LineHeightMultiplier, h2MarginTopPx, h2MarginBottomPx,
+        h3FontSizePx, h3FontWeight, h3LineHeightMultiplier, h3MarginTopPx, h3MarginBottomPx,
+        h4FontSizePx, h4FontWeight, h4LineHeightMultiplier, h4MarginTopPx, h4MarginBottomPx,
+        h5FontSizePx, h5FontWeight, h5LineHeightMultiplier, h5MarginTopPx, h5MarginBottomPx,
+        h6FontSizePx, h6FontWeight, h6LineHeightMultiplier, h6MarginTopPx, h6MarginBottomPx,
+
+        legendaTituloFontSizePx, legendaTituloFontWeight,
+        legendaFontSizePx, legendaFontWeight,
+        legendaTextoFontSizePx, legendaTextoFontWeight,
+        destaqueFontSizePx, destaqueFontWeight
     ) {
+        // Log para verificar se o CSS está sendo recalculado
+        // Log.d("WebViewFontSize", "Recalculando cssStyle com bodyFontSizePx = $bodyFontSizePx")
+        // O valor verticalSpacingEm foi removido pois verticalSpacingPx é calculado diretamente
         """
         <style type="text/css">
             body {
@@ -355,8 +377,7 @@ fun PoesiaDetailContent(
             img {
                 max-width: 100%; height: auto; display: block;
                 border-radius: ${imgBorderRadiusPx}px; background-color: #${imgPlaceholderBgHex};
-                margin-top: ${verticalSpacingEm}em;
-                margin-bottom: ${verticalSpacingEm}em;
+                margin-top: ${verticalSpacingPx}px; margin-bottom: ${verticalSpacingPx}px;
             }
             p, li, div {
                 line-height: $bodyLineHeightMultiplier; font-size: ${bodyFontSizePx}px; color: #$corTextoHex;
@@ -364,50 +385,15 @@ fun PoesiaDetailContent(
             }
             p:first-child, div:first-child { margin-top: 0; }
             p:last-child, div:last-child { margin-bottom: 0; }
-            h1, h2, h3, h4, h5, h6 {
-                color: ${h1TextColorHex};
+            h1, h2, h3, h4, h5, h6 { /* A cor de h1 já é h1TextColorHex, outras herdam ou podem ser definidas */
+                color: #$h1TextColorHex; /* Aplicado a todos os Hs para consistência, pode ajustar se necessário */
             }
-            h1 {
-                font-size: ${h1FontSizePx}px;
-                font-weight: ${h1FontWeight};line-height: ${h1LineHeightMultiplier};
-                margin-top: ${h1MarginTopPx}px;
-                margin-bottom: ${h1MarginBottomPx}px;
-            }
-            h2 {
-                font-size: ${h2FontSizePx}px;
-                font-weight: ${h2FontWeight};
-                line-height: ${h2LineHeightMultiplier};
-                margin-top: ${h2MarginTopPx}px;
-                margin-bottom: ${h2MarginBottomPx}px;
-            }
-            h3 {
-                font-size: ${h3FontSizePx}px;
-                font-weight: ${h3FontWeight};
-                line-height: ${h3LineHeightMultiplier};
-                margin-top: ${h3MarginTopPx}px;
-                margin-bottom: ${h3MarginBottomPx}px;
-            }
-            h4 {
-                font-size: ${h4FontSizePx}px;
-                font-weight: ${h4FontWeight};
-                line-height: ${h4LineHeightMultiplier};
-                margin-top: ${h4MarginTopPx}px;
-                margin-bottom: ${h4MarginBottomPx}px;
-            }
-            h5 {
-                font-size: ${h5FontSizePx}px;
-                font-weight: ${h5FontWeight};
-                line-height: ${h5LineHeightMultiplier};
-                margin-top: ${h5MarginTopPx}px;
-                margin-bottom: ${h5MarginBottomPx}px;
-            }
-            h6 {
-                font-size: ${h6FontSizePx}px;
-                font-weight: ${h6FontWeight};
-                line-height: ${h6LineHeightMultiplier};
-                margin-top: ${h6MarginTopPx}px;
-                margin-bottom: ${h6MarginBottomPx}px;
-            }
+            h1 { font-size: ${h1FontSizePx}px; font-weight: $h1FontWeight; line-height: $h1LineHeightMultiplier; margin-top: ${h1MarginTopPx}px; margin-bottom: ${h1MarginBottomPx}px; }
+            h2 { font-size: ${h2FontSizePx}px; font-weight: $h2FontWeight; line-height: $h2LineHeightMultiplier; margin-top: ${h2MarginTopPx}px; margin-bottom: ${h2MarginBottomPx}px; }
+            h3 { font-size: ${h3FontSizePx}px; font-weight: $h3FontWeight; line-height: $h3LineHeightMultiplier; margin-top: ${h3MarginTopPx}px; margin-bottom: ${h3MarginBottomPx}px; }
+            h4 { font-size: ${h4FontSizePx}px; font-weight: $h4FontWeight; line-height: $h4LineHeightMultiplier; margin-top: ${h4MarginTopPx}px; margin-bottom: ${h4MarginBottomPx}px; }
+            h5 { font-size: ${h5FontSizePx}px; font-weight: $h5FontWeight; line-height: $h5LineHeightMultiplier; margin-top: ${h5MarginTopPx}px; margin-bottom: ${h5MarginBottomPx}px; }
+            h6 { font-size: ${h6FontSizePx}px; font-weight: $h6FontWeight; line-height: $h6LineHeightMultiplier; margin-top: ${h6MarginTopPx}px; margin-bottom: ${h6MarginBottomPx}px; }
 
             blockquote {
                 border-left: 3px solid #$corBordaBlocoCitacaoHex; padding: ${8.dp.asPxInt()}px ${12.dp.asPxInt()}px;
@@ -443,7 +429,7 @@ fun PoesiaDetailContent(
             }
             p.poesia-legenda-numero {
                 margin: 0; 
-                font-size: ${ (legendaTextoFontSizePx * 0.9).toInt().coerceAtLeast(8) }px;
+                font-size: ${ (legendaTextoFontSizePx * 0.9).toInt().coerceAtLeast(8.dp.asPxInt()) }px; /* CoerceAtLeast com Dp para consistência */
                 color: #$corPoesiaLegendaTexto;
             }
             p.poesia-destaque {
@@ -457,6 +443,7 @@ fun PoesiaDetailContent(
     }
 
     val finalHtmlContent = remember(poesia.conteudo, cssStyle) {
+        // Log.d("WebViewFontSize", "Recalculando finalHtmlContent.")
         "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">$cssStyle</head><body>${poesia.conteudo}</body></html>"
     }
 
@@ -545,19 +532,26 @@ fun PoesiaDetailContent(
                     factory = { factoryContext ->
                         WebView(factoryContext).apply {
                             @SuppressLint("SetJavaScriptEnabled")
-                            settings.javaScriptEnabled = false
+                            settings.allowFileAccess = true // Essencial para acessar file:///android_asset/
+                            settings.allowContentAccess = true
+                            settings.javaScriptEnabled = false // Mantido como false conforme seu código
                             settings.loadWithOverviewMode = true
                             settings.useWideViewPort = true
                             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
                             settings.defaultTextEncodingName = "UTF-8"
                             settings.setNeedInitialFocus(false)
-                            settings.blockNetworkImage = false
+                            settings.blockNetworkImage = false // Você tinha false, mantido
                             settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-                            webViewClient = android.webkit.WebViewClient()
+                            webViewClient = android.webkit.WebViewClient() // WebViewClient básico
                             setBackgroundColor(Color.Transparent.toArgb())
                         }
                     },
-                    update = { webView -> webView.post { webView.loadDataWithBaseURL(null, finalHtmlContent, "text/html", "UTF-8", null) } },
+                    update = { webView ->
+                        // Log.d("WebViewFontSize", "WebView update block. Loading new HTML content.")
+                        // Forçar o WebView a recarregar e repintar pode ser necessário em alguns casos
+                         webView.clearCache(true) // Descomente para teste se o problema persistir
+                    webView.post { webView.loadDataWithBaseURL("file:///android_asset/", finalHtmlContent, "text/html", "UTF-8", null) }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(24.dp))
