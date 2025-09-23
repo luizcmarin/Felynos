@@ -1,4 +1,4 @@
-package com.marin.catfeina.ui.theme
+package com.marin.catfeina.ui.theme.padrao
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF4C662B)

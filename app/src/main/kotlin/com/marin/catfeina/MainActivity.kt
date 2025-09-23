@@ -33,6 +33,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -40,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,8 +53,10 @@ import com.marin.catfeina.navigation.InformativosScreen
 import com.marin.catfeina.navigation.InicioScreen
 import com.marin.catfeina.navigation.PersonagemScreen
 import com.marin.catfeina.navigation.PoesiasScreen
-import com.marin.catfeina.navigation.PreferenciasScreen
-import com.marin.catfeina.ui.theme.CatfeinaTheme
+import com.marin.catfeina.ui.diversos.PreferenciasScreen
+import com.marin.catfeina.ui.diversos.PreferenciasViewModel
+import com.marin.catfeina.ui.theme.CatfeinaAppTheme
+import com.marin.catfeina.ui.theme.ThemeChoice
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -69,8 +73,13 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatfeinaApp(navController: NavHostController = rememberNavController()) {
-    CatfeinaTheme {
+fun CatfeinaApp(
+    navController: NavHostController = rememberNavController(),
+    preferenciasViewModel: PreferenciasViewModel = hiltViewModel()
+) {
+    val currentThemeChoice by preferenciasViewModel.currentTheme.collectAsState()
+
+    CatfeinaAppTheme(selectedTheme = currentThemeChoice) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
@@ -152,6 +161,7 @@ fun CatfeinaApp(navController: NavHostController = rememberNavController()) {
                     NavigationDrawerItem(
                         label = { Text("Preferências") },
                         selected = currentRoute == AppDestinations.PREFERENCIAS_ROUTE,
+                        icon = { Icon(Icones.Preferencias, contentDescription = "Preferências") },
                         onClick = {
                             navController.navigate(AppDestinations.PREFERENCIAS_ROUTE) {
                                 popUpTo(navController.graph.startDestinationId)
@@ -266,7 +276,7 @@ fun AppNavHost(
 @Preview(showBackground = true)
 @Composable
 fun CatfeinaAppPreview() {
-    CatfeinaTheme {
+    CatfeinaAppTheme(selectedTheme = ThemeChoice.PADRAO) {
         CatfeinaApp()
     }
 }
@@ -274,7 +284,7 @@ fun CatfeinaAppPreview() {
 @Preview(showBackground = true, name = "Drawer Preview")
 @Composable
 fun DrawerPreview() {
-    CatfeinaTheme {
+    CatfeinaAppTheme(selectedTheme = ThemeChoice.PADRAO) {
         ModalDrawerSheet {
             DrawerHeader()
             Spacer(Modifier.height(12.dp))

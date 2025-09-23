@@ -117,13 +117,13 @@ O módulo `:app` será organizado com a seguinte estrutura de pacotes (exemplo):
   `dominio`,`di`, `ui (theme, diversos, notas, personagem, poesia)`, `componentes`).
 * [X] 0.3. Configurar Hilt para injeção de dependência básica no projeto.
 * [X] 0.4. Configurar Jetpack Navigation Compose para a navegação principal.
-* [] 0.5. Definir o `CatfeinaTheme` (Material 3) inicial no pacote `ui.theme`.
+* [X] 0.5. Definir o `CatfeinaTheme` (Material 3) inicial no pacote `ui.theme`.
 * [X] 0.6. Criar um Composable placeholder simples para verificação da estrutura e tema.
 * [X] 0.7. Integrar este arquivo `GEMINI.MD` (roteiro de desenvolvimento) no versionamento do
   projeto.
-* [] 0.8. **Critério de Conclusão:** Projeto compila, executa, estrutura de pacotes base criada,
+* [X] 0.8. **Critério de Conclusão:** Projeto compila, executa, estrutura de pacotes base criada,
   Hilt e Navigation Compose básicos configurados, tema inicial aplicado.
-* [] 0.9. **Colaboração com Gemini:** Revisão da estrutura de pacotes, exemplos de configuração
+* [X] 0.9. **Colaboração com Gemini:** Revisão da estrutura de pacotes, exemplos de configuração
   `build.gradle.kts` do `:app` (usando `libs.versions.toml`).
 
 ### Fase 1: Camada de Dados Fundamental e Preferências
@@ -131,13 +131,13 @@ O módulo `:app` será organizado com a seguinte estrutura de pacotes (exemplo):
 * [] 1.1. No pacote `data.entity`, definir modelos de dados puros iniciais (ex: `Poesia`,
   `Personagem`, `Informativo`).
 * [] 1.2. No pacote `data.dao`, definir entidades DAOs.
-* [] 1.3. No pacote `data.local`, implementar `Preferencias`.
-* [] 1.4. No pacote `data.remote`, configurar `ApiService` (DataStore) inicial.
-* [] 1.5. No pacote `data.repository`, implementar Repositórios iniciais e interfaces
+* [X] 1.3. No pacote `data.local`, implementar `Preferencias`.
+* [X] 1.4. No pacote `data.remote`, configurar `ApiService` (DataStore) inicial.
+* [P] 1.5. No pacote `data.repository`, implementar Repositórios iniciais e interfaces
   correspondentes.
   Implementar mappers (provavelmente em `data.entity`).
 * [] 1.6. Integrar Hilt para fornecer DAOs, Repositórios, DataSources e o Database.
-* [] 1.7. **Critério de Conclusão:** Camadas de domínio e dados funcionais, carga inicial de
+* [P] 1.7. **Critério de Conclusão:** Camadas de domínio e dados funcionais, carga inicial de
   dados OK, preferências podem ser salvas/lidas. Testes unitários para DAOs, Repositórios e
   DataSources.
 * [] 1.9. **Colaboração com Gemini:** Revisão das definições de entidades e modelos, exemplos de
@@ -149,12 +149,12 @@ O módulo `:app` será organizado com a seguinte estrutura de pacotes (exemplo):
   Markwon) no pacote `ui.componentes`.
 * [] 2.2. Desenvolver telas (Screens) e ViewModels no pacote `ui.informativo` para listar e
   exibir textos informativos.
-* [] 2.3. Desenvolver tela (Screen) e ViewModel no pacote `ui.preferencias` para permitir ao
+* [X] 2.3. Desenvolver tela (Screen) e ViewModel no pacote `ui.preferencias` para permitir ao
   usuário alterar configurações, integrando com `Preferencias`.
-* [] 2.4. Integrar as rotas de navegação para as features `informativo` e `preferencias` no
+* [P] 2.4. Integrar as rotas de navegação para as features `informativo` e `preferencias` no
   grafo de navegação.
 * [] 2.5. Adicionar a API Splash Screen do AndroidX.
-* [] 2.6. **Critério de Conclusão:** Usuário pode navegar, visualizar informativos e alterar
+* [P] 2.6. **Critério de Conclusão:** Usuário pode navegar, visualizar informativos e alterar
   configurações. Splash screen funcional. Testes de UI básicos.
 * [] 2.7. **Colaboração com Gemini:** Auxílio na criação do Composable de Markdown, exemplos de
   ViewModels, integração com DataStore, e configuração da navegação.

@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Pets
@@ -44,6 +45,7 @@ object Icones {
     val Menu = Icons.Default.Menu
     val NaoVer = Icons.Filled.VisibilityOff
     val PaletaDeCores = Icons.Filled.Palette
+    val Preferencias = Icons.Filled.Settings
     val Privacidade = Icons.Default.Policy
     val QrCode = Icons.Filled.QrCode
     val Sobre = Icons.Default.Info

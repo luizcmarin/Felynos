@@ -67,14 +67,3 @@ fun InformativosScreen(modifier: Modifier = Modifier) {
         Text("Tela de Informativos")
     }
 }
-
-@Composable
-fun PreferenciasScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Tela de Preferências")
-    }
-}
