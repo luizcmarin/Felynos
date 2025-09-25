@@ -230,6 +230,7 @@ class ParserTextoFormatado @Inject constructor(
             return null
         }
 
+        // Importante: Adiciona uma validação para caracteres proibidos na palavra-chave
         if (palavraChaveExtraida.contains(Regex("\\s|\\{|\\}|\\|"))) {
             Timber.w("$logPrefix: Palavra-chave inválida '$palavraChaveExtraida' (contém caracteres proibidos). Tag: '${texto.substring(inicioTag, fimTag + 1)}'")
             return null

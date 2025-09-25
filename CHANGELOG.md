@@ -1,6 +1,35 @@
 # Catfeina - Registro de Atualizações (Change Log)
 
 
+## [0.3.0] - 2025-09-24
+
+**Novas Funcionalidades / Melhorias:**
+
+*   **`ParserTextoFormatado.kt`:**
+    *   **Melhoria na Lógica de Parsing de Tags:**
+        *   Ajustada a lógica dentro do método `parse` para lidar corretamente com `ResultadoProcessamentoTag.ElementoBloco`. Agora, um parágrafo pendente é finalizado e adicionado à lista de elementos ANTES de adicionar o novo `ElementoBloco`. Isso garante a ordem correta dos elementos renderizados.
+        *   Adicionado logging mais detalhado (`Timber.d`) para indicar quando um `ElementoBloco` é adicionado à lista final.
+    *   **Refinamento do Tratamento de `AplicacaoTagEmLinha`:**
+        *   Continuamos a refinar como as tags em linha (`AplicacaoTagEmLinha`) são processadas e adicionadas ao `acumuladorTextoParagrafo`.
+        *   Asseguramos que o `intervalo` da aplicação em linha seja corretamente calculado e atualizado com base na sua posição dentro do texto acumulado do parágrafo.
+        *   Adicionamos logs para depuração do cálculo de intervalo e para casos onde o texto original da aplicação é vazio.
+    *   **Melhoria no Tratamento de Erros e Casos Não Consumidos:**
+        *   Refinamos a lógica para quando um processador de tag retorna `ResultadoProcessamentoTag.NaoConsumido` ou `ResultadoProcessamentoTag.Erro`, garantindo que a tag original seja adicionada como texto literal ao parágrafo atual e que logs apropriados (warnings/errors) sejam emitidos.
+        *   Tratamento para quando um processador não é encontrado para uma chave de tag, adicionando a tag literal ao output e logando um erro.
+    *   **Robustez na Finalização de Parágrafos:**
+        *   A função `finalizarParagrafoPendenteEAdicionar` foi revisada para garantir que parágrafos sejam corretamente criados e adicionados, mesmo no final do texto ou entre elementos de bloco.
+    *   **Normalização de Quebras de Linha:**
+        *   Implementada a substituição de `\r\n` por `\n` no início do método `parse` para normalizar as quebras de linha do texto de entrada.
+    *   **Logging Aprimorado:**
+        *   Adicionados e refinados diversos logs `Timber` (verbose, debug, warning, error) ao longo do processo de parsing para facilitar a depuração e o entendimento do fluxo de processamento das tags. Isso inclui logs para o texto de entrada, mapeamento de processadores, cada etapa do loop de parsing, resultados de processadores de tags e a finalização do parsing.
+*   **Discussão e Planejamento (GEMINI.MD):**
+    *   Revisamos o progresso da **Fase 2: Features Iniciais - Informativos e Configurações**.
+    *   Confirmamos o foco no desenvolvimento do Composable genérico para processar texto com tags de formatação customizadas, que é o propósito central do `ParserTextoFormatado.kt`.
+
+**Correções de Bugs:**
+
+*   Indiretamente, o refinamento na lógica de finalização de parágrafos e adição de elementos de bloco preveniu potenciais bugs relacionados à ordem incorreta ou omissão de conteúdo.
+
 ## [0.2.0] - 2025-09-23
 
 ### Funcionalidades e Melhorias

@@ -16,6 +16,7 @@ import com.marin.catfeina.data.entity.Informativo // OK
 import com.marin.catfeina.data.repository.InformativoRepository // OK
 // import com.marin.catfeina.ui.componentes.textoformatado.ParserTextoFormatado.ElementoConteudo // ANTIGO, PODE CAUSAR ERRO
 import com.marin.catfeina.ui.componentes.textoformatado.ElementoConteudo // CORRETO
+import com.marin.catfeina.ui.componentes.textoformatado.TooltipHandler
 // import com.marin.catfeina.di.ParserTextoFormatado // LOCAL ERRADO PARA O PARSER EM SI
 import com.marin.catfeina.ui.componentes.textoformatado.parser.ParserTextoFormatado // CORRETO
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,7 +47,7 @@ class InformativoViewModel @Inject constructor(
     private val parserTextoFormatado: ParserTextoFormatado,
     private val savedStateHandle: SavedStateHandle
     // private val preferenciasRepository: PreferenciasRepository // Comentado, OK
-) : ViewModel() {
+) : ViewModel(), TooltipHandler {
 
     private val _uiState = MutableStateFlow(InformativoUiState())
     val uiState: StateFlow<InformativoUiState> = _uiState.asStateFlow()
@@ -137,7 +138,7 @@ class InformativoViewModel @Inject constructor(
         if (elementos.isEmpty() && informativoCru?.conteudo != null) {
             return informativoCru.conteudo
                 .replace(Regex("<[^>]*>"), "") // Remove tags HTML/XML genéricas (fallback)
-                .replace(Regex("::[^:]*:[^:]*::"), "") // Remove nossas tags customizadas (fallback)
+                .replace(Regex("\\{[^}]*\\}"), "") // Remove nossas tags customizadas (fallback)
                 .trim()
                 .ifBlank { "Conteúdo textual não disponível para leitura." } // Ajuste da mensagem
         }
@@ -162,7 +163,7 @@ class InformativoViewModel @Inject constructor(
         _uiState.update { it.copy(error = null) }
     }
 
-    fun mostrarTooltip(textoTooltip: String) {
+    override fun mostrarTooltip(textoTooltip: String) {
         _uiState.update { it.copy(tooltipParaMostrar = textoTooltip) }
     }
 

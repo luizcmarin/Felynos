@@ -13,7 +13,7 @@ import com.marin.catfeina.ui.componentes.textoformatado.AplicacaoSpanStyle // VE
 import timber.log.Timber
 
 class ProcessadorEstiloSimples : ProcessadorTag {
-    override val palavrasChave: Set<String> = setOf("n", "d", "i", "s")
+    override val palavrasChave: Set<String> = setOf("n", "d", "i", "s", "ni")
 
     override fun processar(
         palavraChaveTag: String,
@@ -45,6 +45,13 @@ class ProcessadorEstiloSimples : ProcessadorTag {
                 AplicacaoSpanStyle(
                     textoOriginal = conteudoTag,
                     textDecoration = TextDecoration.Underline // USA 'textDecoration'
+                )
+            }
+            "ni" -> {
+                AplicacaoSpanStyle(
+                    textoOriginal = conteudoTag,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic
                 )
             }
             else -> {
