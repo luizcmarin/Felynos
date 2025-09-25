@@ -37,7 +37,7 @@ coreAnimation = "1.0.0"
 junit = "4.13.2"
 junitExtVersion = "1.3.0"
 coroutines = "1.10.2"
-workManager = "2.10.4"
+workManager = "2.10.5"
 androidxTestCore = "1.7.0"
 androidxTestRules = "1.7.0"
 
