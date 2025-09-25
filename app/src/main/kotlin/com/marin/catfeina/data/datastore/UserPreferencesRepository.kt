@@ -3,17 +3,21 @@
  * @project Catfeina
  * @description
  * Repositório para gerenciar as preferências do usuário armazenadas no DataStore,
- * especificamente a preferência do tema do aplicativo.
+ * especificamente o tema base selecionado (ex: Primavera, Verão) e se o modo
+ * escuro está ativo para esse tema.
  */
 package com.marin.catfeina.data.datastore
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey // MUDANÇA: Para modo escuro
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.marin.catfeina.ui.theme.ThemeChoice
+import com.marin.catfeina.ui.theme.BaseTheme
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -22,62 +26,79 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Extensão para fornecer uma instância singleton do [DataStore] de preferências para o aplicativo.
- */
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "catfeina_settings")
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "catfeina_user_settings")
 
-/**
- * Repositório responsável por ler e escrever as preferências do usuário, como a escolha do tema.
- * Utiliza [DataStore] para persistência de dados.
- *
- * @property context Contexto da aplicação, injetado pelo Hilt.
- */
 @Singleton
 class UserPreferencesRepository @Inject constructor(@ApplicationContext private val context: Context) {
 
-    /**
-     * Objeto privado para armazenar as chaves de preferência de forma organizada.
-     */
-    private object PreferencesKeys {
-        val SELECTED_THEME = stringPreferencesKey("selected_theme")
+    private companion object {
+        const val TAG = "UserPrefsRepo"
     }
 
-    /**
-     * Um [Flow] que emite a [ThemeChoice] atualmente selecionada pelo usuário.
-     * Se nenhuma preferência for encontrada ou ocorrer um erro, emite [ThemeChoice.PADRAO] como fallback.
-     * Trata exceções de IO que podem ocorrer durante a leitura do DataStore.
-     */
-    val selectedThemeFlow: Flow<ThemeChoice> = context.dataStore.data
+    private object PreferencesKeys {
+        val SELECTED_BASE_THEME = stringPreferencesKey("selected_base_theme")
+        // VAL SELECTED_THEME_STATE = stringPreferencesKey("selected_theme_state") // REMOVIDO
+        val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode_enabled") // NOVO: para Claro/Escuro
+    }
+
+    val selectedBaseThemeFlow: Flow<BaseTheme> = context.dataStore.data
         .catch { exception ->
-            // Trata erros de leitura do DataStore (ex: IOException)
             if (exception is IOException) {
-                // Logar o erro ou emitir um valor padrão
-                // Log.e("UserPrefsRepo", "Erro ao ler preferências de tema.", exception)
-                emit(androidx.datastore.preferences.core.emptyPreferences()) // Emite preferências vazias para continuar com o padrão
+                Log.e(TAG, "Erro ao ler tema base.", exception)
+                emit(emptyPreferences())
             } else {
                 throw exception
             }
         }
         .map { preferences ->
-            val themeName = preferences[PreferencesKeys.SELECTED_THEME] ?: ThemeChoice.PADRAO.name
+            val themeName = preferences[PreferencesKeys.SELECTED_BASE_THEME] ?: BaseTheme.PRIMAVERA.name
             try {
-                ThemeChoice.valueOf(themeName)
+                BaseTheme.valueOf(themeName)
             } catch (e: IllegalArgumentException) {
-                // Em caso de valor inválido salvo (ex: enum renomeado), retorna o padrão
-                // Log.w("UserPrefsRepo", "Valor de tema inválido encontrado: $themeName", e)
-                ThemeChoice.PADRAO
+                Log.w(TAG, "Tema base inválido no DataStore: $themeName. Usando padrão.", e)
+                BaseTheme.PRIMAVERA
             }
         }
 
     /**
-     * Atualiza a [ThemeChoice] selecionada pelo usuário no DataStore.
-     *
-     * @param theme A nova [ThemeChoice] a ser salva.
+     * Um [Flow] que emite se o modo escuro está ativo (true) ou claro (false).
+     * Se nenhuma preferência for encontrada, emite 'false' (modo claro) como padrão.
      */
-    suspend fun updateSelectedTheme(theme: ThemeChoice) {
+    val isDarkModeEnabledFlow: Flow<Boolean> = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                Log.e(TAG, "Erro ao ler preferência de modo escuro.", exception)
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            preferences[PreferencesKeys.IS_DARK_MODE] ?: false // Padrão: Modo Claro (false)
+        }
+
+    suspend fun updateSelectedBaseTheme(baseTheme: BaseTheme) {
         context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.SELECTED_THEME] = theme.name
+            preferences[PreferencesKeys.SELECTED_BASE_THEME] = baseTheme.name
+            Log.d(TAG, "Tema base atualizado para: ${baseTheme.name}")
         }
     }
+
+    /**
+     * Atualiza o estado de modo escuro no DataStore.
+     *
+     * @param isDarkMode true para ativar o modo escuro, false para o modo claro.
+     */
+    suspend fun updateIsDarkMode(isDarkMode: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.IS_DARK_MODE] = isDarkMode
+            Log.d(TAG, "Modo escuro atualizado para: $isDarkMode")
+        }
+    }
+
+    // REMOVA a função antiga:
+    // suspend fun updateSelectedThemeState(themeState: ThemeState) { ... }
+    // REMOVA o flow antigo:
+    // val selectedThemeStateFlow: Flow<ThemeState> = ...
 }
+

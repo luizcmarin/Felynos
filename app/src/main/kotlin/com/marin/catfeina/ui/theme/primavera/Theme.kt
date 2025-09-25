@@ -1,4 +1,4 @@
-package com.marin.catfeina.ui.theme.padrao
+package com.marin.catfeina.ui.theme.primavera
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +11,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-internal val lightSchemePadrao = lightColorScheme(
+internal val lightSchemePrimavera = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
     primaryContainer = primaryContainerLight,
@@ -49,7 +49,7 @@ internal val lightSchemePadrao = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
-internal val darkSchemePadrao = darkColorScheme(
+internal val darkSchemePrimavera = darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
     primaryContainer = primaryContainerDark,
@@ -112,8 +112,8 @@ fun CatfeinaTheme(
           if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
       }
       
-      darkTheme -> darkSchemePadrao
-      else -> lightSchemePadrao
+      darkTheme -> darkSchemePrimavera
+      else -> lightSchemePrimavera
   }
 
   MaterialTheme(

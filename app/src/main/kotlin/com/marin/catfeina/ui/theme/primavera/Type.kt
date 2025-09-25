@@ -1,4 +1,4 @@
-package com.marin.catfeina.ui.theme.padrao
+package com.marin.catfeina.ui.theme.primavera
 
 import androidx.compose.material3.Typography
 
